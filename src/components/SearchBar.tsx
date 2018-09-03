@@ -1,9 +1,9 @@
 import { Input } from '@material-ui/core/';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 
 import * as React from 'react';
 import GameCard from './GameCard';
-// import GameCard from './GameCard';
 
 interface IState {
     error: any,
@@ -27,7 +27,7 @@ export default class SearchBar extends React.Component<{}, IState> {
         return (
             <div>
                 <Input
-                    placeholder="Enter Pokemon name or Id"
+                    placeholder="Enter game name"
                     inputProps={{
                         'aria-label': 'Description',
                     }}
@@ -36,21 +36,20 @@ export default class SearchBar extends React.Component<{}, IState> {
                 {this.state.loading ? <CircularProgress thickness={3} /> : (
                     this.state.error !== "" ? <p>An error occured, please try again later.</p> : (
                         this.state.gameIds.length === 0 ? <p>Please type in a game and press enter.</p> :
-                        this.state.gameIds.map((gameId:any) => (
-                            <GameCard key={gameId.index} gameId={gameId.id}/>
-                        ))
+                        <Grid container={true} spacing={40}>
+                            {this.state.gameIds.map((gameId:any) => (
+                                <GameCard key={gameId.index} gameId={gameId.id}/>
+                            ))}
+                        </Grid>
                     )
                 )}
-                
-                
             </div>
-
         );
     }
 
     private updateInputValue(evt: any) {
         if (evt.key === 'Enter') {
-            this.setState({loading: true});
+            this.setState({ loading: true });
             this.setState({
                 error: "",
                 gameIds: []
