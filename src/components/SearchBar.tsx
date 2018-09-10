@@ -26,23 +26,43 @@ export default class SearchBar extends React.Component<{}, IState> {
     public render() {
         return (
             <div>
-                <Input
-                    placeholder="Enter game name"
-                    inputProps={{
-                        'aria-label': 'Description',
-                    }}
-                    onKeyPress={this.updateInputValue}
-                />
-                {this.state.loading ? <CircularProgress thickness={3} /> : (
-                    this.state.error !== "" ? <p>An error occured, please try again later.</p> : (
-                        this.state.gameIds.length === 0 ? <p>Please type in a game and press enter.</p> :
-                        <Grid container={true} spacing={40}>
-                            {this.state.gameIds.map((gameId:any) => (
-                                <GameCard key={gameId.index} gameId={gameId.id}/>
-                            ))}
+                <Grid container={true} xs={12} justify={'center'}>
+                    <Grid container={true} xs={12} justify={'center'}>
+                        <Grid item={true} xs={4}>
+                            <Input
+                                placeholder="Enter game name"
+                                inputProps={{
+                                    'aria-label': 'Description',
+                                }}
+                                fullWidth={true}
+                                onKeyPress={this.updateInputValue}
+                            />
+                            <Grid container={true} justify={'center'} xs={12}>
+                                <Grid item={true}>
+                                    {this.state.loading ? <CircularProgress thickness={3} /> : (
+                                        this.state.error !== "" ? <p>An error occured, please try again later.</p> : (
+                                            this.state.gameIds.length === 0 ? <p>Please type in a game and press enter.</p> :
+                                                ""
+                                        )
+                                    )}
+                                </Grid>
+                            </Grid>
                         </Grid>
-                    )
-                )}
+                    </Grid>
+
+                    <Grid item={true} xs={12}>
+                        {this.state.loading ? "" : (
+                            this.state.error !== "" ? "" : (
+                                this.state.gameIds.length === 0 ? "" :
+                                    <Grid container={true} spacing={40}>
+                                        {this.state.gameIds.map((gameId: any) => (
+                                            <GameCard key={gameId.index} gameId={gameId.id} />
+                                        ))}
+                                    </Grid>
+                            )
+                        )}
+                    </Grid>
+                </Grid>
             </div>
         );
     }
@@ -73,13 +93,13 @@ export default class SearchBar extends React.Component<{}, IState> {
                     body.forEach((element: any, index: any) => {
                         this.setState(prevState => ({
                             error: '',
-                            gameIds: [...prevState.gameIds, {'index':index, 'id':element.id}]
-                        })) 
+                            gameIds: [...prevState.gameIds, { 'index': index, 'id': element.id }]
+                        }))
                     });
                     return body;
                 })
             }
-            this.setState({loading:false});
+            this.setState({ loading: false });
             return response;
         })
     }
